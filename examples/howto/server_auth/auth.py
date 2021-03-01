@@ -20,9 +20,7 @@ class LoginHandler(RequestHandler):
         self.render("login.html", errormessage=errormessage)
 
     def check_permission(self, username, password):
-        if username == "bokeh" and password == "bokeh":
-            return True
-        return False
+        return username == "bokeh" and password == "bokeh"
 
     def post(self):
         username = self.get_argument("username", "")

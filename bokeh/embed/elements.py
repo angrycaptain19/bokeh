@@ -123,8 +123,7 @@ def html_page_for_render_items(bundle, docs_json, render_items, title, template=
     elif isinstance(template, str):
         template = _env.from_string("{% extends base %}\n" + template)
 
-    html = template.render(context)
-    return html
+    return template.render(context)
 
 def script_for_render_items(docs_json_or_id, render_items: List[RenderItem],
                             app_path: Optional[str] = None, absolute_url: Optional[str] = None) -> str:

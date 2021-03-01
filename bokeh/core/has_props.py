@@ -85,7 +85,7 @@ def _overridden_defaults(class_dict):
     return overridden_defaults
 
 def _generators(class_dict):
-    generators = dict()
+    generators = {}
     for name, generator in tuple(class_dict.items()):
         if isinstance(generator, PropertyDescriptorFactory):
             del class_dict[name]
@@ -205,7 +205,7 @@ def accumulate_dict_from_superclasses(cls, propname):
     # we MUST use cls.__dict__ NOT hasattr(). hasattr() would also look at base
     # classes, and the cache must be separate for each class
     if cachename not in cls.__dict__:
-        d = dict()
+        d = {}
         for c in cls.__mro__:
             if issubclass(c, HasProps) and hasattr(c, propname):
                 base = getattr(c, propname)
@@ -226,8 +226,8 @@ class HasProps(metaclass=MetaHasProps):
 
         '''
         super().__init__()
-        self._property_values = dict()
-        self._unstable_default_values = dict()
+        self._property_values = {}
+        self._unstable_default_values = {}
         self._unstable_themed_values = dict()
 
         for name, value in properties.items():
@@ -306,7 +306,7 @@ class HasProps(metaclass=MetaHasProps):
             return modelref
 
         bases = [ basecls for basecls in cls.__bases__ if is_DataModel(basecls) ]
-        if len(bases) == 0:
+        if not bases:
             extends = None
         elif len(bases) == 1:
             extends = bases[0].static_to_serializable(serializer)
@@ -321,17 +321,20 @@ class HasProps(metaclass=MetaHasProps):
             module = None
 
         properties = []
-        overrides = []
-
+        kind = None # TODO: serialize kinds
         # TODO: don't use unordered sets
         for prop_name in list(cls.__properties__):
             descriptor = cls.lookup(prop_name)
-            kind = None # TODO: serialize kinds
             default = descriptor.property._default # TODO: private member
             properties.append(dict(name=prop_name, kind=kind, default=default))
 
-        for prop_name, default in getattr(cls, "__overridden_defaults__", {}).items():
-            overrides.append(dict(name=prop_name, default=default))
+        overrides = [
+            dict(name=prop_name, default=default)
+            for prop_name, default in getattr(
+                cls, "__overridden_defaults__", {}
+            ).items()
+        ]
+
 
         modeldef = dict(name=name, module=module, extends=extends, properties=properties, overrides=overrides)
         modelref = dict(name=name, module=module)
@@ -591,7 +594,7 @@ class HasProps(metaclass=MetaHasProps):
 
         '''
         themed_keys = set()
-        result = dict()
+        result = {}
         if include_defaults:
             keys = self.properties()
         else:
@@ -617,9 +620,13 @@ class HasProps(metaclass=MetaHasProps):
                 else:
                     continue
             else:
-                if not include_defaults and key not in themed_keys:
-                    if isinstance(value, PropertyValueContainer) and key in self._unstable_default_values:
-                        continue
+                if (
+                    not include_defaults
+                    and key not in themed_keys
+                    and isinstance(value, PropertyValueContainer)
+                    and key in self._unstable_default_values
+                ):
+                    continue
 
             result[key] = value
 
@@ -664,10 +671,7 @@ class HasProps(metaclass=MetaHasProps):
         if old_dict is not None:
             removed.update(set(old_dict.keys()))
         added = set(property_values.keys())
-        old_values = dict()
-        for k in added.union(removed):
-            old_values[k] = getattr(self, k)
-
+        old_values = {k: getattr(self, k) for k in added.union(removed)}
         if len(property_values) > 0:
             setattr(self, '__themed_values__', property_values)
         elif hasattr(self, '__themed_values__'):

@@ -8,6 +8,7 @@
 :class:`~bokeh.model.Model` properties.
 
 '''
+
 #-----------------------------------------------------------------------------
 # Boilerplate
 #-----------------------------------------------------------------------------
@@ -31,7 +32,7 @@ from ..core.has_props import HasProps
 # whenever we cache that there's nothing themed for a class, we
 # use this same dict instance, so we don't have a zillion empty
 # dicts in our caches.
-_empty_dict = dict()
+_empty_dict = {}
 
 __all__ = (
     'Theme',
@@ -183,7 +184,7 @@ class Theme:
                     continue
                 self._add_glyph_defaults(base, combined)
                 combined.update(attrs.get(base.__name__, _empty_dict))
-            if len(combined) == 0:
+            if not combined:
                 combined = _empty_dict
             self._by_class_cache[cls.__name__] = combined
         return self._by_class_cache[cls.__name__]

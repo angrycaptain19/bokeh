@@ -104,13 +104,13 @@ class Document:
     _message_callbacks: Dict[str, List[Callable[[Any], None]]]
 
     def __init__(self, **kwargs):
-        self._roots = list()
+        self._roots = []
         self._theme = kwargs.pop('theme', default_theme)
         # use _title directly because we don't need to trigger an event
         self._title = kwargs.pop('title', DEFAULT_TITLE)
         self._template = FILE
         self._all_models_freeze_count = 0
-        self._all_models = dict()
+        self._all_models = {}
         self._all_models_by_name = MultiValuedDict()
         self._all_former_model_ids = set()
         self._callbacks = {}
@@ -402,9 +402,8 @@ class Document:
                 if patched_id not in self._all_models:
                     if patched_id not in self._all_former_model_ids:
                         raise RuntimeError("Cannot apply patch to %s which is not in the document" % (str(patched_id)))
-                    else:
-                        log.debug("Cannot apply patch to %s which is not in the document anymore. This is usually harmless" % (str(patched_id)))
-                        break
+                    log.debug("Cannot apply patch to %s which is not in the document anymore. This is usually harmless" % (str(patched_id)))
+                    break
                 patched_obj = self._all_models[patched_id]
                 attr = event_json['attr']
                 value = event_json['new']
@@ -720,7 +719,7 @@ class Document:
             self._callbacks[callback] = callback
 
     def on_change_dispatch_to(self, receiver):
-        if not receiver in self._callbacks:
+        if receiver not in self._callbacks:
             self._callbacks[receiver] = lambda event: event.dispatch(receiver)
 
     def on_session_destroyed(self, *callbacks):
@@ -866,7 +865,7 @@ class Document:
         result = list(self.select(selector))
         if len(result) > 1:
             raise ValueError("Found more than one model matching %s: %r" % (selector, result))
-        if len(result) == 0:
+        if not result:
             return None
         return result[0]
 

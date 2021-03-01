@@ -42,7 +42,7 @@ def collect_credential(**kw: str) -> Callable[[VerifyFunctionType], StepType]:
 
         @wraps(func)
         def wrapper(config: Config, system: System) -> ActionReturn:
-            secrets = dict()
+            secrets = {}
             for argname, envname in kw.items():
                 if envname not in os.environ:
                     return FAILED(f"Credential {envname} is not set")

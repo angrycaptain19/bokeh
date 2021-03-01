@@ -115,14 +115,13 @@ def check_checkout_matches_remote(config: Config, system: System) -> ActionRetur
         base = system.run("git merge-base @ @{u}")
         if local == remote:
             return PASSED("Checkout is up to date with GitHub")
+        if local == base:
+            status = "NEED TO PULL"
+        elif remote == base:
+            status = "NEED TO PUSH"
         else:
-            if local == base:
-                status = "NEED TO PULL"
-            elif remote == base:
-                status = "NEED TO PUSH"
-            else:
-                status = "DIVERGED"
-            return FAILED(f"Checkout is NOT up to date with GitHub ({status})")
+            status = "DIVERGED"
+        return FAILED(f"Checkout is NOT up to date with GitHub ({status})")
     except RuntimeError as e:
         return FAILED("Could not check whether local and GitHub are up to date", details=e.args)
 

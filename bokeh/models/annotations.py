@@ -206,9 +206,12 @@ class LegendItem(Model):
 
     @error(NON_MATCHING_DATA_SOURCES_ON_LEGEND_ITEM_RENDERERS)
     def _check_data_sources_on_renderers(self):
-        if self.label and 'field' in self.label:
-            if len({r.data_source for r in self.renderers}) != 1:
-                return str(self)
+        if (
+            self.label
+            and 'field' in self.label
+            and len({r.data_source for r in self.renderers}) != 1
+        ):
+            return str(self)
 
     @error(BAD_COLUMN_NAME)
     def _check_field_label_on_data_source(self):

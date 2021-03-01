@@ -160,16 +160,16 @@ def add_examples(list_of_examples, path, examples_dir, example_type=None, slow=N
         if name.startswith(('_', '.')):
             continue
         elif name.endswith(".py"):
-            flags |= example_type if example_type else Flags.file
+            flags |= example_type or Flags.file
         elif name.endswith(".ipynb"):
             flags |= Flags.notebook
         elif isdir(join(example_path, name)):
             if exists(join(example_path, name, name + ".py")):
                 name = join(name, name + ".py")
-                flags |= example_type if example_type else Flags.file
+                flags |= example_type or Flags.file
             elif exists(join(example_path, name, "main.py")):
                 # name is unchanged and passed as the example name
-                flags |= example_type if example_type else Flags.server
+                flags |= example_type or Flags.server
             else:
                 continue
 

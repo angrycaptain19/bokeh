@@ -66,9 +66,8 @@ class StaticHandler(StaticFileHandler):
         # to manage caching. This improves the ability to debug code.
         if settings.dev:
             return path
-        else:
-            version = StaticFileHandler.get_version(dict(static_path=settings.bokehjsdir()), path)
-            return f"{path}?v={version}"
+        version = StaticFileHandler.get_version(dict(static_path=settings.bokehjsdir()), path)
+        return f"{path}?v={version}"
 
 #-----------------------------------------------------------------------------
 # Private API

@@ -119,9 +119,8 @@ class element_to_start_resizing:
         current_width = self.element.size['width']
         if self.previous_width != current_width:
             return True
-        else:
-            self.previous_width = current_width
-            return False
+        self.previous_width = current_width
+        return False
 
 class element_to_finish_resizing:
     ''' An expectation for checking if an element has finished resizing
@@ -136,9 +135,8 @@ class element_to_finish_resizing:
         current_width = self.element.size['width']
         if self.previous_width == current_width:
             return True
-        else:
-            self.previous_width = current_width
-            return False
+        self.previous_width = current_width
+        return False
 
 def select_element_and_press_key(driver, element, key, press_number=1):
     actions = ActionChains(driver)

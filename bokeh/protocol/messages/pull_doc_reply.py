@@ -73,9 +73,7 @@ class pull_doc_reply(Message):
 
         content = { 'doc' : document.to_json() }
 
-        msg = cls(header, metadata, content)
-
-        return msg
+        return cls(header, metadata, content)
 
     def push_to_document(self, doc):
         if 'doc' not in self.content:

@@ -56,12 +56,12 @@ class ProtocolHandler:
     '''
 
     def __init__(self):
-        self._handlers = dict()
-
-        self._handlers['PULL-DOC-REQ'] = ServerSession.pull
-        self._handlers['PUSH-DOC'] = ServerSession.push
-        self._handlers['PATCH-DOC'] = ServerSession.patch
-        self._handlers['SERVER-INFO-REQ'] = self._server_info_req
+        self._handlers = {
+            'PULL-DOC-REQ': ServerSession.pull,
+            'PUSH-DOC': ServerSession.push,
+            'PATCH-DOC': ServerSession.patch,
+            'SERVER-INFO-REQ': self._server_info_req,
+        }
 
     async def handle(self, message, connection):
         ''' Delegate a received message to the appropriate handler.

@@ -113,14 +113,11 @@ def process_document_events(events, use_buffers=True):
 
     '''
 
-    json_events = []
     references = set()
 
     buffers = [] if use_buffers else None
 
-    for event in events:
-        json_events.append(event.generate(references, buffers))
-
+    json_events = [event.generate(references, buffers) for event in events]
     json = {
         'events'     : json_events,
         'references' : references_json(references),

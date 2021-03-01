@@ -3,7 +3,7 @@ from bokeh.models import BooleanFilter, CDSView, ColumnDataSource
 from bokeh.plotting import figure, show
 
 source = ColumnDataSource(data=dict(x=[1, 2, 3, 4, 5], y=[1, 2, 3, 4, 5]))
-booleans = [True if y_val > 2 else False for y_val in source.data['y']]
+booleans = [y_val > 2 for y_val in source.data['y']]
 view = CDSView(source=source, filters=[BooleanFilter(booleans)])
 
 tools = ["box_select", "hover", "reset"]

@@ -375,10 +375,11 @@ class Box(LayoutDOM):
 
     def __init__(self, *args, **kwargs):
 
-        if len(args) > 0 and "children" in kwargs:
-            raise ValueError("'children' keyword cannot be used with positional arguments")
-        elif len(args) > 0:
-            kwargs["children"] = list(args)
+        if len(args) > 0:
+            if "children" in kwargs:
+                raise ValueError("'children' keyword cannot be used with positional arguments")
+            else:
+                kwargs["children"] = list(args)
 
         super().__init__(**kwargs)
 
@@ -390,10 +391,12 @@ class Box(LayoutDOM):
 
     @warning(BOTH_CHILD_AND_ROOT)
     def _check_child_is_also_root(self):
-        problems = []
-        for c in self.children:
-            if c.document is not None and c in c.document.roots:
-                problems.append(str(c))
+        problems = [
+            str(c)
+            for c in self.children
+            if c.document is not None and c in c.document.roots
+        ]
+
         if problems:
             return ", ".join(problems)
         else:

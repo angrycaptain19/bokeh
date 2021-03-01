@@ -289,13 +289,10 @@ def standalone_docs_json_and_render_items(models, suppress_callback_warning=Fals
             for model in doc.roots:
                 roots[model] = make_globally_unique_id()
 
-    docs_json = {}
-    for doc, (docid, _) in docs.items():
-        docs_json[docid] = doc.to_json()
-
-    render_items = []
-    for _, (docid, roots) in docs.items():
-        render_items.append(RenderItem(docid, roots=roots))
+    docs_json = {docid: doc.to_json() for doc, (docid, _) in docs.items()}
+    render_items = [
+        RenderItem(docid, roots=roots) for _, (docid, roots) in docs.items()
+    ]
 
     return (docs_json, render_items)
 
@@ -303,13 +300,10 @@ def submodel_has_python_callbacks(models):
     ''' Traverses submodels to check for Python (event) callbacks
 
     '''
-    has_python_callback = False
-    for model in collect_models(models):
-        if len(model._callbacks) > 0 or len(model._event_callbacks) > 0:
-            has_python_callback = True
-            break
-
-    return has_python_callback
+    return any(
+        len(model._callbacks) > 0 or len(model._event_callbacks) > 0
+        for model in collect_models(models)
+    )
 
 #-----------------------------------------------------------------------------
 # Private API

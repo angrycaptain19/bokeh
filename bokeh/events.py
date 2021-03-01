@@ -149,7 +149,7 @@ class Event:
                 <bokeh.events.Pan object at 0x1040f84a8>
 
         '''
-        if not ('event_name' in dct and 'event_values' in dct):
+        if 'event_name' not in dct or 'event_values' not in dct:
             return dct
 
         event_name = dct['event_name']

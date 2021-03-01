@@ -393,10 +393,7 @@ class ClientSession:
         self.connect()
         self.check_connection_errors()
 
-        if self.document is None:
-            doc = Document()
-        else:
-            doc = self.document
+        doc = Document() if self.document is None else self.document
         self._connection.pull_doc(doc)
         if self.document is None:
             self._attach_document(doc)
@@ -417,10 +414,7 @@ class ClientSession:
 
         '''
         if self.document is None:
-            if document is None:
-                doc = Document()
-            else:
-                doc = document
+            doc = Document() if document is None else document
         else:
             if document is None:
                 doc = self.document

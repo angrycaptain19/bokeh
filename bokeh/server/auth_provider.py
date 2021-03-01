@@ -154,7 +154,11 @@ class AuthProvider:
         if self.get_user and self.get_user_async:
             raise ValueError("Only one of get_user or get_user_async should be supplied")
 
-        if (self.get_user or self.get_user_async) and not (self.login_url or self.get_login_url):
+        if (
+            ((self.get_user or self.get_user_async))
+            and not self.login_url
+            and not self.get_login_url
+        ):
             raise ValueError("When user authentication is enabled, one of login_url or get_login_url must be supplied")
 
         if self.login_url and self.get_login_url:

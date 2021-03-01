@@ -79,13 +79,11 @@ def get_browser_controller(browser: Optional[str] = None) -> BrowserLike:
     browser = settings.browser(browser)
 
     if browser is None:
-        controller = cast(BrowserLike, webbrowser)
+        return cast(BrowserLike, webbrowser)
     elif browser == "none":
-        controller = DummyWebBrowser()
+        return DummyWebBrowser()
     else:
-        controller = webbrowser.get(browser)
-
-    return controller
+        return webbrowser.get(browser)
 
 def view(location: str, browser: Optional[str] = None, new: Literal["same", "window", "tab"] = "same", autoraise: bool = True) -> None:
     ''' Open a browser to view the specified location.

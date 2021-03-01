@@ -4,7 +4,7 @@ from bokeh.plotting import Figure, output_file, show
 
 output_file("js_on_change.html")
 
-x = [x*0.005 for x in range(0, 200)]
+x = [x*0.005 for x in range(200)]
 y = x
 
 source = ColumnDataSource(data=dict(x=x, y=y))

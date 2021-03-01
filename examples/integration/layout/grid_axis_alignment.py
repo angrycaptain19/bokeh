@@ -30,8 +30,8 @@ template = """
 
 items = []
 
+coeffs = [10**3, 10**6]
 for location in ["above", "right", "left", "below"]:
-    coeffs = [10**3, 10**6]
     V = np.arange(10)
 
     figs = []

@@ -75,10 +75,9 @@ autodoc_member_order = 'groupwise'
 
 bokeh_missing_google_api_key_ok = False
 
-if not bokeh_missing_google_api_key_ok:
-    if "GOOGLE_API_KEY" not in os.environ:
-        raise RuntimeError("\n\nThe GOOGLE_API_KEY environment variable is not set. Set GOOGLE_API_KEY to a valid API key, "
-                           "or set bokeh_missing_google_api_key_ok=True in conf.py to build anyway (with broken GMaps)")
+if not bokeh_missing_google_api_key_ok and "GOOGLE_API_KEY" not in os.environ:
+    raise RuntimeError("\n\nThe GOOGLE_API_KEY environment variable is not set. Set GOOGLE_API_KEY to a valid API key, "
+                       "or set bokeh_missing_google_api_key_ok=True in conf.py to build anyway (with broken GMaps)")
 
 bokeh_plot_pyfile_include_dirs = ['docs']
 

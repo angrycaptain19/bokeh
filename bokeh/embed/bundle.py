@@ -216,9 +216,8 @@ def _query_extensions(objs, query):
         names.add(name)
 
         for model in Model.model_class_reverse_map.values():
-            if model.__module__.startswith(name):
-                if query(model):
-                    return True
+            if model.__module__.startswith(name) and query(model):
+                return True
 
     return False
 

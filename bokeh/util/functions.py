@@ -52,8 +52,10 @@ def get_param_info(sig):
         tuple(list, list) : parameters with defaults
 
     '''
-    defaults = []
-    for param in sig.parameters.values():
-        if param.default is not param.empty:
-            defaults.append(param.default)
+    defaults = [
+        param.default
+        for param in sig.parameters.values()
+        if param.default is not param.empty
+    ]
+
     return list(sig.parameters), defaults

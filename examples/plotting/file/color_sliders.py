@@ -12,9 +12,15 @@ from bokeh.themes import Theme
 def generate_color_range(N, I):
     HSV_tuples = [ (x*1.0/N, 0.5, I) for x in range(N) ]
     RGB_tuples = map(lambda x: colorsys.hsv_to_rgb(*x), HSV_tuples)
-    for_conversion = []
-    for RGB_tuple in RGB_tuples:
-        for_conversion.append((int(RGB_tuple[0]*255), int(RGB_tuple[1]*255), int(RGB_tuple[2]*255)))
+    for_conversion = [
+        (
+            int(RGB_tuple[0] * 255),
+            int(RGB_tuple[1] * 255),
+            int(RGB_tuple[2] * 255),
+        )
+        for RGB_tuple in RGB_tuples
+    ]
+
     hex_colors = [ rgb_to_hex(RGB_tuple) for RGB_tuple in for_conversion ]
     return hex_colors, for_conversion
 

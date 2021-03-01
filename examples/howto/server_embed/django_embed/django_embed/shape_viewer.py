@@ -65,5 +65,4 @@ class ShapeViewer(param.Parameterized):
 
 def shape_viewer():
     viewer = ShapeViewer()
-    panel = pn.Row(viewer.param, viewer.panel())
-    return panel
+    return pn.Row(viewer.param, viewer.panel())

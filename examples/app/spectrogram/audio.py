@@ -44,8 +44,7 @@ except ImportError:
     print()
 
     def fm_modulation(x, f_carrier = 220, f_mod =220, Ind_mod = 1):
-        y = np.sin(2*np.pi*f_carrier*x + Ind_mod*np.sin(2*np.pi*f_mod*x))
-        return y
+        return np.sin(2*np.pi*f_carrier*x + Ind_mod*np.sin(2*np.pi*f_mod*x))
 
     # These are basically picked out of a hat to show something vaguely interesting
     _t = np.arange(0, NUM_SAMPLES/SAMPLING_RATE, 1.0/SAMPLING_RATE)

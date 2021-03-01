@@ -100,9 +100,7 @@ def make_tab(title, glyph):
 
     plot.add_tools(HoverTool())
 
-    tab = Panel(child=plot, title=title, closable=True)
-
-    return tab
+    return Panel(child=plot, title=title, closable=True)
 
 def make_tabs(objs):
     return Tabs(tabs=[ make_tab(title, obj) for title, obj in objs ], width=600)

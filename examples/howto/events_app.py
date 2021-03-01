@@ -41,8 +41,11 @@ def print_event(attributes=[]):
     """
     def python_callback(event):
         cls_name = event.__class__.__name__
-        attrs = ', '.join(['{attr}={val}'.format(attr=attr, val=event.__dict__[attr])
-                       for attr in attributes])
+        attrs = ', '.join(
+            '{attr}={val}'.format(attr=attr, val=event.__dict__[attr])
+            for attr in attributes
+        )
+
         print(f"{cls_name}({attrs})")
 
     return python_callback

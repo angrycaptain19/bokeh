@@ -66,13 +66,13 @@ def _read_data():
     '''
 
     '''
-    nan = float('NaN')
-
     data = {}
 
     with open_csv(external_path('US_Counties.csv')) as f:
         next(f)
         reader = csv.reader(f, delimiter=",", quotechar='"')
+        nan = float('NaN')
+
         for row in reader:
             name, dummy, state, dummy, geometry, dummy, dummy, dummy, det_name, state_id, county_id, dummy, dummy = row
             xml = et.fromstring(geometry)

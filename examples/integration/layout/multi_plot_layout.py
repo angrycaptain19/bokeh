@@ -18,8 +18,8 @@ ncols = 8
 nrows = 8
 
 figures = []
-for col in range(0, ncols):
-    for row in range(0, nrows):
+for col in range(ncols):
+    for row in range(nrows):
         x = 100.0/ncols*col
         y = 100.0/nrows*row
         r, g, b = int(50+2*x), int(30+2*y), 150

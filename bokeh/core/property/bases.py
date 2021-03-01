@@ -95,7 +95,7 @@ class Property(PropertyDescriptorFactory):
         default = default if default is not Intrinsic else Undefined
 
         if serialized is None:
-            self._serialized = False if readonly and default is Undefined else True
+            self._serialized = not readonly or default is not Undefined
         else:
             self._serialized = serialized
 
@@ -353,11 +353,7 @@ class Property(PropertyDescriptorFactory):
             obj = owner
 
             for fn, msg_or_fn in self.assertions:
-                if isinstance(fn, bool):
-                    result = fn
-                else:
-                    result = fn(obj, value)
-
+                result = fn if isinstance(fn, bool) else fn(obj, value)
                 assert isinstance(result, bool)
 
                 if not result:

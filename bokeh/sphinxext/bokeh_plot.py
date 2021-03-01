@@ -199,10 +199,17 @@ def builder_inited(app):
 
 
 def build_finished(app, exception):
-    files = set()
+    files = {
+        (js_path, docpath)
+        for (
+            script,
+            js,
+            js_path,
+            source,
+            docpath,
+        ) in app.env.bokeh_plot_files.values()
+    }
 
-    for (script, js, js_path, source, docpath) in app.env.bokeh_plot_files.values():
-        files.add((js_path, docpath))
 
     files_iter = status_iterator(sorted(files), "copying bokeh-plot files... ", "brown", len(files), app.verbosity, stringify_func=lambda x: basename(x[0]))
 

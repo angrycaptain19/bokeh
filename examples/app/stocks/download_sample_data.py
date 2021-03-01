@@ -38,11 +38,7 @@ def extract_zip(zip_name, exclude_term=None):
             for zip_file in files:
 
                 # remove any provided extra directory term from zip file
-                if exclude_term:
-                    dest_file = zip_file.replace(exclude_term, '')
-                else:
-                    dest_file = zip_file
-
+                dest_file = zip_file.replace(exclude_term, '') if exclude_term else zip_file
                 dest_file = os.path.normpath(os.path.join(zip_dir, dest_file))
                 dest_dir = os.path.dirname(dest_file)
 

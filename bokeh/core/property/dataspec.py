@@ -311,10 +311,13 @@ class FontSizeSpec(DataSpec):
         # validations makes m.font_size = "" or m.font_size = "6" an error
         super().validate(value, detail)
 
-        if isinstance(value, str):
-            if len(value) == 0 or value[0].isdigit() and not FontSize._font_size_re.match(value):
-                msg = "" if not detail else f"{value!r} is not a valid font size value"
-                raise ValueError(msg)
+        if isinstance(value, str) and (
+            len(value) == 0
+            or value[0].isdigit()
+            and not FontSize._font_size_re.match(value)
+        ):
+            msg = "" if not detail else f"{value!r} is not a valid font size value"
+            raise ValueError(msg)
 
 class FontStyleSpec(DataSpec):
     def __init__(self, default, help=None, key_type=_ExprFieldValueTransform):

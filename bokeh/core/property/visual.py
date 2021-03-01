@@ -157,9 +157,13 @@ class Image(Property):
         if isinstance(value, (str, PIL.Image.Image)):
             return
 
-        if isinstance(value, np.ndarray):
-            if value.dtype == "uint8" and len(value.shape) == 3 and value.shape[2] in (3, 4):
-                return
+        if (
+            isinstance(value, np.ndarray)
+            and value.dtype == "uint8"
+            and len(value.shape) == 3
+            and value.shape[2] in (3, 4)
+        ):
+            return
 
         msg = "" if not detail else f"invalid value: {value!r}; allowed values are string filenames, PIL.Image.Image instances, or RGB(A) NumPy arrays"
         raise ValueError(msg)

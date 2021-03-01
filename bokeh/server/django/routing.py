@@ -116,7 +116,7 @@ class RoutingConfiguration:
         kwargs = dict(app_context=routing.app_context)
 
         def join(*components):
-            return "/".join([ component.strip("/") for component in components if component ])
+            return "/".join(component.strip("/") for component in components if component)
 
         def urlpattern(suffix=""):
             return r"^{}$".format(join(re.escape(routing.url)) + suffix)

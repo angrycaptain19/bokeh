@@ -117,14 +117,13 @@ def streamlines(x: np.ndarray, y, u, v, density: float = 1) -> Tuple[List[Any], 
                 new_xb, new_yb = blank_pos(xi, yi)
                 if new_xb != xb or new_yb != yb:
                     # New square, so check and colour. Quit if required.
-                    if blank[new_yb,new_xb] == 0:
-                        blank[new_yb,new_xb] = 1
-                        bx_changes.append(new_xb)
-                        by_changes.append(new_yb)
-                        xb = new_xb
-                        yb = new_yb
-                    else:
+                    if blank[new_yb, new_xb] != 0:
                         break
+                    blank[new_yb,new_xb] = 1
+                    bx_changes.append(new_xb)
+                    by_changes.append(new_yb)
+                    xb = new_xb
+                    yb = new_yb
                 if stotal > 2:
                     break
             return stotal, xf_traj, yf_traj

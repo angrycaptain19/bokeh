@@ -11,8 +11,7 @@ df = pd.DataFrame(np.random.randint(10, 100, size=(N, cats))).add_prefix('y')
 def stacked(df):
     df_top = df.cumsum(axis=1)
     df_bottom = df_top.shift(axis=1).fillna({'y0': 0})[::-1]
-    df_stack = pd.concat([df_bottom, df_top], ignore_index=True)
-    return df_stack
+    return pd.concat([df_bottom, df_top], ignore_index=True)
 
 areas = stacked(df)
 colors = brewer['Spectral'][areas.shape[1]]

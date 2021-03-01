@@ -278,7 +278,7 @@ class PrioritizedSetting:
     '''
 
     def __init__(self, name, env_var=None, default=_Unset, dev_default=_Unset, convert=None, help=""):
-        self._convert = convert if convert else convert_str
+        self._convert = convert or convert_str
         self._default = default
         self._dev_default = dev_default
         self._env_var = env_var
@@ -665,10 +665,7 @@ class Settings:
         '''
         if not hasattr(self, '_secret_key_bytes'):
             key = self.secret_key()
-            if key is None:
-                self._secret_key_bytes = None
-            else:
-                self._secret_key_bytes = codecs.encode(key, "utf-8")
+            self._secret_key_bytes = None if key is None else codecs.encode(key, "utf-8")
         return self._secret_key_bytes
 
     def _try_load_config(self, locations):
@@ -689,10 +686,9 @@ class Settings:
 
 settings = Settings()
 
-if settings.secret_key() is not None:
-    if len(settings.secret_key()) < 32:
-        import warnings
-        warnings.warn("BOKEH_SECRET_KEY is recommended to have at least 32 bytes of entropy chosen with a cryptographically-random algorithm")
+if settings.secret_key() is not None and len(settings.secret_key()) < 32:
+    import warnings
+    warnings.warn("BOKEH_SECRET_KEY is recommended to have at least 32 bytes of entropy chosen with a cryptographically-random algorithm")
 
 if settings.sign_sessions() and settings.secret_key() is None:
     import warnings

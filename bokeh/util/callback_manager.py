@@ -46,7 +46,7 @@ class EventCallbackManager:
     '''
     def __init__(self, *args, **kw):
         super().__init__(*args, **kw)
-        self._event_callbacks = dict()
+        self._event_callbacks = {}
 
     def on_event(self, event, *callbacks):
         ''' Run callbacks when the specified event occurs on this Model
@@ -108,7 +108,7 @@ class PropertyCallbackManager:
 
     def __init__(self, *args, **kw):
         super().__init__(*args, **kw)
-        self._callbacks = dict()
+        self._callbacks = {}
 
     def on_change(self, attr, *callbacks):
         ''' Add a callback on this object to trigger when ``attr`` changes.
