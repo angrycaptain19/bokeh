@@ -103,14 +103,12 @@ def server_document(url="default", relative_urls=False, resources="default", arg
 
     headers = headers or {}
 
-    tag = AUTOLOAD_REQUEST_TAG.render(
+    return AUTOLOAD_REQUEST_TAG.render(
         src_path  = src_path,
         app_path  = app_path,
         elementid = elementid,
         headers   = headers,
     )
-
-    return tag
 
 def server_session(model=None, session_id=None, url="default", relative_urls=False, resources="default", headers={}):
     ''' Return a script tag that embeds content from a specific existing session on
@@ -193,15 +191,13 @@ def server_session(model=None, session_id=None, url="default", relative_urls=Fal
     headers = dict(headers) if headers else {}
     headers['Bokeh-Session-Id'] = session_id
 
-    tag = AUTOLOAD_REQUEST_TAG.render(
+    return AUTOLOAD_REQUEST_TAG.render(
         src_path  = src_path,
         app_path  = app_path,
         elementid = elementid,
         modelid   = modelid,
         headers   = headers,
     )
-
-    return tag
 
 #-----------------------------------------------------------------------------
 # Dev API
@@ -235,9 +231,8 @@ def server_html_page_for_session(session, resources, title, template=FILE, templ
         template_variables = {}
 
     bundle = bundle_for_objs_and_resources(None, resources)
-    html = html_page_for_render_items(bundle, {}, [render_item], title,
+    return html_page_for_render_items(bundle, {}, [render_item], title,
         template=template, template_variables=template_variables)
-    return html
 
 #-----------------------------------------------------------------------------
 # Private API
@@ -290,11 +285,11 @@ def _process_arguments(arguments):
 
     '''
     if arguments is None: return ""
-    result = ""
-    for key, value in arguments.items():
-        if not key.startswith("bokeh-"):
-            result += "&{}={}".format(quote_plus(str(key)), quote_plus(str(value)))
-    return result
+    return "".join(
+        "&{}={}".format(quote_plus(str(key)), quote_plus(str(value)))
+        for key, value in arguments.items()
+        if not key.startswith("bokeh-")
+    )
 
 def _process_app_path(app_path):
     ''' Return an app path HTML argument to add to a Bokeh server URL.

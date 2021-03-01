@@ -141,7 +141,7 @@ def build_or_install_bokehjs():
         sys.argv.remove('--install-js')
 
     jsbuild_ok = ('install', 'develop', 'sdist', 'egg_info', 'build')
-    if jsbuild and not any(arg in sys.argv for arg in jsbuild_ok):
+    if jsbuild and all(arg not in sys.argv for arg in jsbuild_ok):
         print("Error: Option '--build-js' only valid with 'install', 'develop', 'sdist', or 'build', exiting.")
         sys.exit(1)
 
@@ -169,10 +169,13 @@ def check_building_sdist():
         None
 
     '''
-    if "sdist" in sys.argv:
-        if "--install-js" not in sys.argv and "--build-js" not in sys.argv:
-            print("Error: Option '--build-js' or '--install-js' must be present with 'sdist', exiting.")
-            sys.exit(1)
+    if (
+        "sdist" in sys.argv
+        and "--install-js" not in sys.argv
+        and "--build-js" not in sys.argv
+    ):
+        print("Error: Option '--build-js' or '--install-js' must be present with 'sdist', exiting.")
+        sys.exit(1)
 
 def fixup_for_packaged():
     ''' If we are installing FROM an sdist, then a pre-built BokehJS is
@@ -191,10 +194,10 @@ def fixup_for_packaged():
     if exists(join(ROOT, 'PKG-INFO')):
         if "--build-js" in sys.argv or "--install-js" in sys.argv:
             print(SDIST_BUILD_WARNING)
-            if "--build-js" in sys.argv:
-                sys.argv.remove('--build-js')
-            if "--install-js" in sys.argv:
-                sys.argv.remove('--install-js')
+        if "--build-js" in sys.argv:
+            sys.argv.remove('--build-js')
+        if "--install-js" in sys.argv:
+            sys.argv.remove('--install-js')
         if "--existing-js" not in sys.argv:
             sys.argv.append('--existing-js')
 

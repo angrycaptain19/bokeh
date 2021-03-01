@@ -155,11 +155,7 @@ def serialize_json(obj, pretty=None, indent=None, **kwargs):
 
     pretty = settings.pretty(pretty)
 
-    if pretty:
-        separators=(",", ": ")
-    else:
-        separators=(",", ":")
-
+    separators = (",", ": ") if pretty else (",", ":")
     if pretty and indent is None:
         indent = 2
 

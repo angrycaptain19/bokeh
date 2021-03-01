@@ -59,8 +59,7 @@ x_range = DataRange1d(start=EN[0]-dE , end=EN[0]+dE) # (m) Easting  x_lo, x_hi
 y_range = DataRange1d(start=EN[1]-dN , end=EN[1]+dN) # (m) Northing y_lo, y_hi
 
 plot = [0]*len(Vendors) # initialize list to store Vendor plots
-idx = 0
-for vendor_name in Vendors:
+for idx, vendor_name in enumerate(Vendors):
     print(f"cnt={idx}: Vendor={vendor_name}")
     tile_provider = get_provider(vendor_name)
 
@@ -69,9 +68,6 @@ for vendor_name in Vendors:
                         plot_height=200, plot_width=300, title=vendor_name)
 
     plot[idx].add_tile(tile_provider)
-    idx += 1
-
-
 ## arrange all map views in a grid layout
 layout = layout([
     [description],

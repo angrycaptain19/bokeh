@@ -65,7 +65,7 @@ def deprecated(since_or_msg: Union[Version, str],
         if extra is not None:
             message += " " + extra.strip()
     elif isinstance(since_or_msg, str):
-        if not (old is None and new is None and extra is None):
+        if old is not None or new is not None or extra is not None:
             raise ValueError("deprecated(message) signature doesn't allow extra arguments")
 
         message = since_or_msg

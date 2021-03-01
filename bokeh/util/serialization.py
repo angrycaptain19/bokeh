@@ -439,10 +439,7 @@ def traverse_data(obj, buffers=None):
             if isnan(item):
                 item = 'NaN'
             elif isinf(item):
-                if item > 0:
-                    item = 'Infinity'
-                else:
-                    item = '-Infinity'
+                item = 'Infinity' if item > 0 else '-Infinity'
             obj_copy.append(item)
         elif isinstance(item, (list, tuple)):  # check less common type second
             obj_copy.append(traverse_data(item))

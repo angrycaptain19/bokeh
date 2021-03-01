@@ -42,19 +42,13 @@ def verify_all(module, ALL):
     '''
     class Test___all__:
         def test___all__(self):
-            if isinstance(module, str):
-                mod = importlib.import_module(module)
-            else:
-                mod = module
+            mod = importlib.import_module(module) if isinstance(module, str) else module
             assert hasattr(mod, "__all__")
             assert mod.__all__ == ALL, "for module %s, expected: %r, actual: %r" % (mod.__name__, set(ALL)-set(mod.__all__), set(mod.__all__)-set(ALL))
 
         @pytest.mark.parametrize('name', ALL)
         def test_contents(self, name):
-            if isinstance(module, str):
-                mod = importlib.import_module(module)
-            else:
-                mod = module
+            mod = importlib.import_module(module) if isinstance(module, str) else module
             assert hasattr(mod, name)
     return Test___all__
 

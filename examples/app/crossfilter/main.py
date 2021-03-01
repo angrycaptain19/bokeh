@@ -28,7 +28,7 @@ def create_figure():
     x_title = x.value.title()
     y_title = y.value.title()
 
-    kw = dict()
+    kw = {}
     if x.value in discrete:
         kw['x_range'] = sorted(set(xs))
     if y.value in discrete:

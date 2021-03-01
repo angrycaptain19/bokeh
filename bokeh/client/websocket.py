@@ -67,10 +67,8 @@ class WebSocketClientConnectionWrapper:
                 # is closed.
                 raise WebSocketError("Connection to the server has been closed")
 
-            future = self._socket.write_message(message, binary)
-
             # don't await this future or we're blocking on ourselves!
-            return future
+            return self._socket.write_message(message, binary)
 
         if locked:
             with await self.write_lock.acquire():

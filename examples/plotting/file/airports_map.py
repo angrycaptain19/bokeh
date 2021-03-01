@@ -24,14 +24,16 @@ def plot(tile_source):
     return p
 
 # create a tile source
-tile_options = {}
-tile_options['url'] = 'http://tile.stamen.com/terrain/{Z}/{X}/{Y}.png'
-tile_options['attribution'] = """
+tile_options = {
+    'url': 'http://tile.stamen.com/terrain/{Z}/{X}/{Y}.png',
+    'attribution': """
     Map tiles by <a href="http://stamen.com">Stamen Design</a>, under
     <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a>.
     Data by <a href="http://openstreetmap.org">OpenStreetMap</a>,
     under <a href="http://www.openstreetmap.org/copyright">ODbL</a>.
-    """
+    """,
+}
+
 mq_tile_source = WMTSTileSource(**tile_options)
 
 carto = plot(get_provider(CARTODBPOSITRON))

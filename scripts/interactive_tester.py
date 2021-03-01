@@ -143,7 +143,7 @@ def main(testing_ground=None, notebook_options=""):
             fileName = "%s/%s" % (testing_ground, fileName)
         try:
 
-            if not fileName in lastSession:
+            if fileName not in lastSession:
                 lastSession[fileName] = "TESTING..."
                 save_session(lastSession)
 
@@ -215,8 +215,7 @@ def test_status():
         print("")
         status = input("Unexpected answer. Please type y or n. ")  # lgtm [py/use-of-input]
     if status.startswith('n'):
-        ErrorReport = input("Please describe the problem: ")  # lgtm [py/use-of-input]
-        return ErrorReport
+        return input("Please describe the problem: ")
 
 
 def logger(error_array, name):
@@ -245,7 +244,7 @@ if __name__ == '__main__':
     results = parser.parse_args()
 
     if results.location:
-        if results.location and results.location in DIRECTORIES:
+        if results.location in DIRECTORIES:
             target = results.location
 
             test_dir = DIRECTORIES[target]

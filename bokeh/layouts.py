@@ -257,9 +257,8 @@ def gridplot(children, sizing_mode=None, toolbar_location='above', ncols=None,
     if toolbar_options is None:
         toolbar_options = {}
 
-    if toolbar_location:
-        if not hasattr(Location, toolbar_location):
-            raise ValueError("Invalid value of toolbar_location: %s" % toolbar_location)
+    if toolbar_location and not hasattr(Location, toolbar_location):
+        raise ValueError("Invalid value of toolbar_location: %s" % toolbar_location)
 
     children = _parse_children_arg(children=children)
     if ncols:
@@ -302,7 +301,7 @@ def gridplot(children, sizing_mode=None, toolbar_location='above', ncols=None,
         return GridBox(children=items, sizing_mode=sizing_mode)
 
     grid = GridBox(children=items)
-    tools = sum([ toolbar.tools for toolbar in toolbars ], [])
+    tools = sum((toolbar.tools for toolbar in toolbars), [])
     proxy = ProxyToolbar(toolbars=toolbars, tools=tools, **toolbar_options)
     toolbar = ToolbarBox(toolbar=proxy, toolbar_location=toolbar_location)
 
@@ -443,11 +442,11 @@ def grid(children=[], sizing_mode=None, nrows=None, ncols=None):
             layout = col([ row(children[i:i+ncols]) for i in range(0, N, ncols) ])
         else:
             def traverse(children, level=0):
-                if isinstance(children, list):
-                    container = col if level % 2 == 0 else row
-                    return container([ traverse(child, level+1) for child in children ])
-                else:
+                if not isinstance(children, list):
                     return children
+
+                container = col if level % 2 == 0 else row
+                return container([ traverse(child, level+1) for child in children ])
 
             layout = traverse(children)
     elif isinstance(children, LayoutDOM):
@@ -539,7 +538,7 @@ class GridSpec:
                 self._arrangement[row, col] = get_or_else(lambda: obj[row-row1][col-col1], None) # lgtm [py/loop-variable-capture]
 
     def __iter__(self):
-        array = [ [ None ]*self.ncols for _ in range(0, self.nrows) ]
+        array = [[ None ]*self.ncols for _ in range(self.nrows)]
         for (row, col), obj in self._arrangement.items():
             array[row][col] = obj
         return iter(array)

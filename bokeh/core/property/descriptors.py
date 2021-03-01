@@ -835,11 +835,7 @@ class BasicPropertyDescriptor(PropertyDescriptor):
         # "old" is the logical old value, but it may not be the actual current
         # attribute value if our value was mutated behind our back and we got
         # _notify_mutated.
-        if was_set:
-            old_attr_value = obj._property_values[self.name]
-        else:
-            old_attr_value = old
-
+        old_attr_value = obj._property_values[self.name] if was_set else old
         if old_attr_value is not value:
             if isinstance(old_attr_value, PropertyValueContainer):
                 old_attr_value._unregister_owner(obj, self)

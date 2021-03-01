@@ -82,7 +82,7 @@ curdoc().title = "Selection Histogram"
 
 def update(attr, old, new):
     inds = new
-    if len(inds) == 0 or len(inds) == len(x):
+    if len(inds) in [0, len(x)]:
         hhist1, hhist2 = hzeros, hzeros
         vhist1, vhist2 = vzeros, vzeros
     else:

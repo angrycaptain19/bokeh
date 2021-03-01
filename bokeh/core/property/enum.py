@@ -47,7 +47,7 @@ class Enum(String):
     """
 
     def __init__(self, enum, *values, default=Intrinsic, help=None, serialized=None, readonly=False):
-        if not (not values and isinstance(enum, enums.Enumeration)):
+        if values or not isinstance(enum, enums.Enumeration):
             enum = enums.enumeration(enum, *values)
         self._enum = enum
 

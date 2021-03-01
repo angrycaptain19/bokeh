@@ -240,11 +240,7 @@ class ColumnDataSource(ColumnarDataSource):
 
         tmp_data = {c: v.values for c, v in _df.items()}
 
-        new_data = {}
-        for k, v in tmp_data.items():
-            new_data[k] = v
-
-        return new_data
+        return {k: v for k, v in tmp_data.items()}
 
     @staticmethod
     def _data_from_groupby(group):

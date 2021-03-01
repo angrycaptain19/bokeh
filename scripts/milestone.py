@@ -138,7 +138,7 @@ def check_issue(data, problems):
         problems.append(f"issue has a status: {description(data)}")
 
     # no issues without a type: label
-    num_types = sum(1 for label in labels if label.startswith("type:"))
+    num_types = sum(bool(label.startswith("type:")) for label in labels)
     if num_types == 0:
         problems.append(f"issue does not have a type: {description(data)}")
 
@@ -151,7 +151,7 @@ def check_issue(data, problems):
         problems.append(f"issue has an invalid type: {description(data)}")
 
     # no issues with TRIAGE label
-    if any(label == "TRIAGE" for label in labels):
+    if "TRIAGE" in labels:
         problems.append(f"issue is in triage: {description(data)}")
 
 
@@ -180,7 +180,7 @@ def check_pr(data, problems):
         problems.append(f"PR has too many statuses: {description(data)}")
 
     # no prs with multiple type: labels
-    if sum(1 for label in labels if label.startswith("type:")) > 1:
+    if sum(bool(label.startswith("type:")) for label in labels) > 1:
         problems.append(f"PR has multiple types: {description(data)}")
 
     # no prs with invalid type: labels
@@ -188,7 +188,7 @@ def check_pr(data, problems):
         problems.append(f"PR has an invalid type: {description(data)}")
 
     # no prs with TRIAGE label
-    if any(label == "TRIAGE" for label in labels):
+    if "TRIAGE" in labels:
         problems.append(f"PR is in triage: {description(data)}")
 
 

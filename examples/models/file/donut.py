@@ -44,10 +44,11 @@ plot.add_glyph(browsers_source, glyph)
 
 def polar_to_cartesian(r, start_angles, end_angles):
     cartesian = lambda r, alpha: (r*cos(alpha), r*sin(alpha))
-    points = []
+    points = [
+        cartesian(r, (end + start) / 2)
+        for start, end in zip(start_angles, end_angles)
+    ]
 
-    for start, end in zip(start_angles, end_angles):
-        points.append(cartesian(r, (end + start)/2))
 
     return zip(*points)
 

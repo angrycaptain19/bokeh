@@ -99,12 +99,7 @@ def convert_docutils_node(list_item, only_pages=False):
     if only_pages and "#" in url:
         return None
 
-    nav = {}
-    nav["title"] = title
-    nav["url"] = url
-    nav["children"] = []
-    nav["active"] = active
-
+    nav = {"title": title, "url": url, "children": [], "active": active}
     if len(list_item.children) > 1:
         for child_item in list_item.children[1].children:
             child_nav = convert_docutils_node(child_item, only_pages=only_pages)
@@ -131,8 +126,7 @@ def update_page_context(self, pagename, templatename, ctx, event_arg):
         self_toc = TocTree(self.env).get_toc_for(pagename, self)
 
         try:
-            nav = convert_docutils_node(self_toc.children[0])
-            return nav
+            return convert_docutils_node(self_toc.children[0])
         except Exception:
             return {}
 

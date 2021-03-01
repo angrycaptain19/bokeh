@@ -138,9 +138,7 @@ def build_single_handler_application(path: str, argv: Optional[Sequence[str]] = 
     if handler.failed:
         raise RuntimeError("Error loading %s:\n\n%s\n%s " % (path, handler.error, handler.error_detail))
 
-    application = Application(handler)
-
-    return application
+    return Application(handler)
 
 def build_single_handler_applications(paths: List[str], argvs: Optional[Dict[str, List[str]]] = None) -> Dict[str, Application]:
     ''' Return a dictionary mapping routes to Bokeh applications built using

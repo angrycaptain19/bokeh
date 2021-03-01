@@ -257,7 +257,7 @@ def push_notebook(*, document=None, state=None, handle=None):
     # This is to avoid having an exception raised for attempting to create a
     # PATCH-DOC with no events. In the notebook, we just want to silently
     # ignore calls to push_notebook when there are no new events
-    if len(events) == 0:
+    if not events:
         return
 
     handle.doc._held_events = []

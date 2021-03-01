@@ -10,7 +10,8 @@ from bokeh.core.property.singletons import Undefined
 from bokeh.model import Model
 from bokeh.util.warnings import BokehDeprecationWarning
 
-import bokeh.models; bokeh.models # isort:skip
+import bokeh.models
+bokeh.models # isort:skip
 
 dest_dir = sys.argv[1]
 
@@ -34,7 +35,7 @@ for name, model in Model.model_class_reverse_map.items():
             default = struct
         elif default is Undefined:
             default = None # TODO: add support for unset values in bokehjs
-        elif default == float("inf") or default == float("-inf"):
+        elif default in [float("inf"), float("-inf")]:
             default = None # TODO: add serialization support for +/-oo
         defaults[attr] = default
 

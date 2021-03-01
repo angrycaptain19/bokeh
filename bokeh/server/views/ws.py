@@ -106,11 +106,10 @@ class WSHandler(AuthMixin, WebSocketHandler):
         allowed = check_allowlist(origin_host, allowed_hosts)
         if allowed:
             return True
-        else:
-            log.error("Refusing websocket connection from Origin '%s'; \
+        log.error("Refusing websocket connection from Origin '%s'; \
                       use --allow-websocket-origin=%s or set BOKEH_ALLOW_WS_ORIGIN=%s to permit this; currently we allow origins %r",
-                      origin, origin_host, origin_host, allowed_hosts)
-            return False
+                  origin, origin_host, origin_host, allowed_hosts)
+        return False
 
     @web.authenticated
     def open(self):
@@ -156,7 +155,7 @@ class WSHandler(AuthMixin, WebSocketHandler):
     def select_subprotocol(self, subprotocols):
         log.debug('Subprotocol header received')
         log.trace('Supplied subprotocol headers: %r', subprotocols)
-        if not len(subprotocols) == 2:
+        if len(subprotocols) != 2:
             return None
         self._token = subprotocols[1]
         return subprotocols[0]

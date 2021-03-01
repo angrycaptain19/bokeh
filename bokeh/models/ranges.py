@@ -453,10 +453,11 @@ class FactorRange(Range):
     """)
 
     def __init__(self, *args, **kwargs):
-        if args and "factors" in kwargs:
-            raise ValueError("'factors' keyword cannot be used with positional arguments")
-        elif args:
-            kwargs['factors'] = list(args)
+        if args:
+            if "factors" in kwargs:
+                raise ValueError("'factors' keyword cannot be used with positional arguments")
+            else:
+                kwargs['factors'] = list(args)
         super().__init__(**kwargs)
 
     @error(DUPLICATE_FACTORS)

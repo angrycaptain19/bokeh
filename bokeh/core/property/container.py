@@ -78,10 +78,7 @@ class Seq(ContainerProperty):
             return
 
         if self._is_seq(value):
-            invalid = []
-            for item in value:
-                if not self.item_type.is_valid(item):
-                    invalid.append(item)
+            invalid = [item for item in value if not self.item_type.is_valid(item)]
             msg = "" if not detail else f"expected an element of {self}, got seq with invalid items {invalid!r}"
             raise ValueError(msg)
 
@@ -122,13 +119,10 @@ class List(Seq):
         """ Some property types need to wrap their values in special containers, etc.
 
         """
-        if isinstance(value, list):
-            if isinstance(value, PropertyValueList):
-                return value
-            else:
-                return PropertyValueList(value)
-        else:
+        if isinstance(value, PropertyValueList) or not isinstance(value, list):
             return value
+        else:
+            return PropertyValueList(value)
 
     @classmethod
     def _is_seq(cls, value):
@@ -190,13 +184,10 @@ class Dict(ContainerProperty):
         """ Some property types need to wrap their values in special containers, etc.
 
         """
-        if isinstance(value, dict):
-            if isinstance(value, PropertyValueDict):
-                return value
-            else:
-                return PropertyValueDict(value)
-        else:
+        if isinstance(value, PropertyValueDict) or not isinstance(value, dict):
             return value
+        else:
+            return PropertyValueDict(value)
 
     def _sphinx_type(self):
         prop_link = self._sphinx_prop_link()
@@ -260,13 +251,12 @@ class ColumnData(Dict):
         """ Some property types need to wrap their values in special containers, etc.
 
         """
-        if isinstance(value, dict):
-            if isinstance(value, PropertyValueColumnData):
-                return value
-            else:
-                return PropertyValueColumnData(value)
-        else:
+        if isinstance(value, PropertyValueColumnData) or not isinstance(
+            value, dict
+        ):
             return value
+        else:
+            return PropertyValueColumnData(value)
 
 class Tuple(ContainerProperty):
     """ Accept Python tuple values.
@@ -293,9 +283,15 @@ class Tuple(ContainerProperty):
     def validate(self, value, detail=True):
         super().validate(value, detail)
 
-        if isinstance(value, (tuple, list)) and len(self.type_params) == len(value):
-            if all(type_param.is_valid(item) for type_param, item in zip(self.type_params, value)):
-                return
+        if (
+            isinstance(value, (tuple, list))
+            and len(self.type_params) == len(value)
+            and all(
+                type_param.is_valid(item)
+                for type_param, item in zip(self.type_params, value)
+            )
+        ):
+            return
 
         msg = "" if not detail else f"expected an element of {self}, got {value!r}"
         raise ValueError(msg)

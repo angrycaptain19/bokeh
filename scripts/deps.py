@@ -43,7 +43,7 @@ if "windows" in platform.platform().lower():
     spec = [f'"{s}"' for s in spec]
 
 deps = ""
-deps += " ".join(s for s in spec)
+deps += " ".join(spec)
 deps = deps.replace(' >=', '>=')  # conda syntax doesn't allow spaces b/w pkg name and version spec
 deps = deps.replace(' <', '<')
 deps = deps.replace(' [unix]', ' ')

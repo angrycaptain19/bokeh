@@ -206,10 +206,7 @@ class ServerSession:
         return callback._copy_with_changed_callback(wrapped)
 
     def _wrap_session_callbacks(self, callbacks):
-        wrapped = []
-        for cb in callbacks:
-            wrapped.append(self._wrap_session_callback(cb))
-        return wrapped
+        return [self._wrap_session_callback(cb) for cb in callbacks]
 
     def _document_patched(self, event):
         may_suppress = event.setter is self

@@ -602,7 +602,7 @@ class Model(HasProps, PropertyCallbackManager, EventCallbackManager):
         result = list(self.select(selector))
         if len(result) > 1:
             raise ValueError("Found more than one object matching %s: %r" % (selector, result))
-        if len(result) == 0:
+        if not result:
             return None
         return result[0]
 

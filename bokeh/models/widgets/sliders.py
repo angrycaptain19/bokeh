@@ -66,9 +66,12 @@ class AbstractSlider(Widget):
     """ """
 
     def __init__(self, **kwargs):
-        if 'start' in kwargs and 'end' in kwargs:
-            if kwargs['start'] == kwargs['end']:
-                raise ValueError("Slider 'start' and 'end' cannot be equal.")
+        if (
+            'start' in kwargs
+            and 'end' in kwargs
+            and kwargs['start'] == kwargs['end']
+        ):
+            raise ValueError("Slider 'start' and 'end' cannot be equal.")
 
         if "value" in kwargs and "value_throttled" not in kwargs:
             kwargs["value_throttled"] = kwargs["value"]
@@ -97,9 +100,12 @@ class AbstractSlider(Widget):
 
     @error(EQUAL_SLIDER_START_END)
     def _check_missing_dimension(self):
-        if hasattr(self, 'start') and hasattr(self, 'end'):
-            if self.start == self.end:
-                return f"{self!s} with title {self.title!s}"
+        if (
+            hasattr(self, 'start')
+            and hasattr(self, 'end')
+            and self.start == self.end
+        ):
+            return f"{self!s} with title {self.title!s}"
 
 #-----------------------------------------------------------------------------
 # General API

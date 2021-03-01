@@ -61,10 +61,7 @@ class BokehServerContext(ServerContext):
 
     @property
     def sessions(self):
-        result = []
-        for session in self.application_context.sessions:
-            result.append(session)
-        return result
+        return [session for session in self.application_context.sessions]
 
     def add_next_tick_callback(self, callback):
         return self._callbacks.add_next_tick_callback(callback)
@@ -139,8 +136,8 @@ class ApplicationContext:
     def __init__(self, application, io_loop=None, url=None, logout_url=None):
         self._application = application
         self._loop = io_loop
-        self._sessions = dict()
-        self._pending_sessions = dict()
+        self._sessions = {}
+        self._pending_sessions = {}
         self._session_contexts = dict()
         self._server_context = None
         self._url = url
@@ -237,8 +234,7 @@ class ApplicationContext:
 
     def get_session(self, session_id):
         if session_id in self._sessions:
-            session = self._sessions[session_id]
-            return session
+            return self._sessions[session_id]
         else:
             raise ProtocolError("No such session " + session_id)
 

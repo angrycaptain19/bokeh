@@ -366,11 +366,7 @@ class PropertyValueColumnData(PropertyValueDict):
         cols = set(kwargs.keys())
         if len(args) == 1:
             E = args[0]
-            if hasattr(E, 'keys'):
-                cols |= set(E.keys())
-            else:
-                cols |= { x[0] for x in E }
-
+            cols |= set(E.keys()) if hasattr(E, 'keys') else { x[0] for x in E }
         # we must loop ourselves here instead of calling _notify_owners
         # because the hint is customized for each owner separately
         for (owner, descriptor) in self._owners:

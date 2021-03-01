@@ -128,11 +128,7 @@ class FileOutputSubcommand(Subcommand):
         '''
 
         '''
-        if route == "/":
-            base = "index"
-        else:
-            base = route[1:]
-
+        base = "index" if route == "/" else route[1:]
         return "%s.%s" % (base, ext)
 
     def invoke(self, args: argparse.Namespace) -> None:
@@ -154,7 +150,7 @@ class FileOutputSubcommand(Subcommand):
         for (route, app) in applications.items():
             doc = app.create_document()
 
-            if len(outputs) > 0:
+            if outputs:
                 filename = outputs.pop(0)
             else:
                 filename = self.filename_from_route(route, self.extension)

@@ -41,7 +41,7 @@ class MultiValuedDict:
         '''
 
         '''
-        self._dict = dict()
+        self._dict = {}
 
     def add_value(self, key, value):
         '''
@@ -103,8 +103,6 @@ class MultiValuedDict:
                 del self._dict[key]
         elif existing == value:
             del self._dict[key]
-        else:
-            pass
 
 #-----------------------------------------------------------------------------
 # Dev API

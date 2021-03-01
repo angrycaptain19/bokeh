@@ -42,7 +42,7 @@ def single_stack(stackers, spec, **kw):
     lengths = { len(x) for x in kw.values() if isinstance(x, (list, tuple)) }
 
     # lengths will be empty if there are no kwargs supplied at all
-    if len(lengths) > 0:
+    if lengths:
         if len(lengths) != 1:
             raise ValueError("Keyword argument sequences for broadcasting must all be the same lengths. Got lengths: %r" % sorted(list(lengths)))
         if lengths.pop() != len(stackers):
@@ -59,11 +59,7 @@ def single_stack(stackers, spec, **kw):
         d[spec] = stack(*s)
 
         for k, v in kw.items():
-            if isinstance(v, (list, tuple)):
-                d[k] = v[i]
-            else:
-                d[k] = v
-
+            d[k] = v[i] if isinstance(v, (list, tuple)) else v
         _kw.append(d)
 
     return _kw
@@ -76,7 +72,7 @@ def double_stack(stackers, spec0, spec1, **kw):
     lengths = { len(x) for x in kw.values() if isinstance(x, (list, tuple)) }
 
     # lengths will be empty if there are no kwargs supplied at all
-    if len(lengths) > 0:
+    if lengths:
         if len(lengths) != 1:
             raise ValueError("Keyword argument sequences for broadcasting must all be the same lengths. Got lengths: %r" % sorted(list(lengths)))
         if lengths.pop() != len(stackers):
@@ -96,11 +92,7 @@ def double_stack(stackers, spec0, spec1, **kw):
         d[spec1] = stack(*s1)
 
         for k, v in kw.items():
-            if isinstance(v, (list, tuple)):
-                d[k] = v[i]
-            else:
-                d[k] = v
-
+            d[k] = v[i] if isinstance(v, (list, tuple)) else v
         _kw.append(d)
 
     return _kw

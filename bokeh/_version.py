@@ -26,8 +26,7 @@ def get_keywords():
     git_refnames = "$Format:%d$"
     git_full = "$Format:%H$"
     git_date = "$Format:%ci$"
-    keywords = {"refnames": git_refnames, "full": git_full, "date": git_date}
-    return keywords
+    return {"refnames": git_refnames, "full": git_full, "date": git_date}
 
 
 class VersioneerConfig:
@@ -119,9 +118,8 @@ def versions_from_parentdir(parentdir_prefix, root, verbose):
             return {"version": dirname[len(parentdir_prefix):],
                     "full-revisionid": None,
                     "dirty": False, "error": None, "date": None}
-        else:
-            rootdirs.append(root)
-            root = os.path.dirname(root)  # up a level
+        rootdirs.append(root)
+        root = os.path.dirname(root)  # up a level
 
     if verbose:
         print("Tried directories %s but none started with prefix %s" %
@@ -325,14 +323,12 @@ def render_pep440(pieces):
         if pieces["distance"] or pieces["dirty"]:
             rendered += plus_or_dot(pieces)
             rendered += "%d.g%s" % (pieces["distance"], pieces["short"])
-            if pieces["dirty"]:
-                rendered += ".dirty"
     else:
         # exception #1
         rendered = "0+untagged.%d.g%s" % (pieces["distance"],
                                           pieces["short"])
-        if pieces["dirty"]:
-            rendered += ".dirty"
+    if pieces["dirty"]:
+        rendered += ".dirty"
     return rendered
 
 
@@ -391,13 +387,11 @@ def render_pep440_old(pieces):
         rendered = pieces["closest-tag"]
         if pieces["distance"] or pieces["dirty"]:
             rendered += ".post%d" % pieces["distance"]
-            if pieces["dirty"]:
-                rendered += ".dev0"
     else:
         # exception #1
         rendered = "0.post%d" % pieces["distance"]
-        if pieces["dirty"]:
-            rendered += ".dev0"
+    if pieces["dirty"]:
+        rendered += ".dev0"
     return rendered
 
 

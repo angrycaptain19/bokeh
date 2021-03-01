@@ -293,7 +293,7 @@ class BaseResources:
     @log_level.setter
     def log_level(self, level):
         valid_levels = ["trace", "debug", "info", "warn", "error", "fatal"]
-        if not (level is None or level in valid_levels):
+        if level is not None and level not in valid_levels:
             raise ValueError("Unknown log level '{}', valid levels are: {}".format(level, str(valid_levels)))
         self._log_level = level
 
@@ -317,8 +317,7 @@ class BaseResources:
         legacy = ".legacy" if self.legacy else ""
 
         files = [f"{component}{legacy}{minified}.{kind}" for component in self.components(kind)]
-        paths = [join(self.base_dir, kind, file) for file in files]
-        return paths
+        return [join(self.base_dir, kind, file) for file in files]
 
     def _collect_external_resources(self, resource_attr):
         """ Collect external resources set on resource_attr attribute of all models."""

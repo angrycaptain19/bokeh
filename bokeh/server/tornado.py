@@ -349,7 +349,7 @@ class BokehTornado(TornadoApplication):
         log.debug("These host origins can connect to the websocket: %r", list(self._websocket_origins))
 
         # Wrap applications in ApplicationContext
-        self._applications = dict()
+        self._applications = {}
         for k,v in applications.items():
             self._applications[k] = ApplicationContext(v, url=k, logout_url=self.auth_provider.logout_url)
 
@@ -360,10 +360,7 @@ class BokehTornado(TornadoApplication):
         for key, app in applications.items():
             app_patterns = []
             for p in per_app_patterns:
-                if key == "/":
-                    route = p[0]
-                else:
-                    route = key + p[0]
+                route = p[0] if key == "/" else key + p[0]
                 context = {"application_context": self._applications[key]}
                 if issubclass(p[1], WSHandler):
                     context['compression_level'] = websocket_compression_level
@@ -384,10 +381,7 @@ class BokehTornado(TornadoApplication):
 
             # add a per-app static path if requested by the application
             if app.static_path is not None:
-                if key == "/":
-                    route = "/static/(.*)"
-                else:
-                    route = key + "/static/(.*)"
+                route = "/static/(.*)" if key == "/" else key + "/static/(.*)"
                 route = self._prefix + route
                 all_patterns.append((route, StaticFileHandler, { "path" : app.static_path }))
 
@@ -673,10 +667,7 @@ class BokehTornado(TornadoApplication):
         log.debug("[pid %d] %d clients connected", os.getpid(), len(self._clients))
         for app_path, app in self._applications.items():
             sessions = list(app.sessions)
-            unused_count = 0
-            for s in sessions:
-                if s.connection_count == 0:
-                    unused_count += 1
+            unused_count = sum(s.connection_count == 0 for s in sessions)
             log.debug("[pid %d]   %s has %d sessions with %d unused",
                       os.getpid(), app_path, len(sessions), unused_count)
 
